@@ -227,16 +227,16 @@ export default function StudyParticipatePage() {
       <div className="container mx-auto px-4 py-8 max-w-2xl text-center">
         <Card>
           <CardContent className="pt-8 pb-8">
-            <CheckCircle className="w-16 h-16 text-green-600 mx-auto mb-6" />
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">🎉 Thank You!</h1>
-            <p className="text-lg text-gray-600 mb-6">
+            <CheckCircle className="w-16 h-16 text-primary mx-auto mb-6" />
+            <h1 className="text-3xl font-bold text-foreground mb-4">🎉 Thank You!</h1>
+            <p className="text-lg text-muted-foreground mb-6">
               You've successfully completed the study! Your responses have been securely saved.
             </p>
             <div className="space-y-4">
               <Button onClick={handleComplete} size="lg">
                 Submit Responses
               </Button>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-muted-foreground">
                 Submitting will finalize your participation
               </p>
             </div>
@@ -255,8 +255,8 @@ export default function StudyParticipatePage() {
       {/* Header */}
       <div className="mb-6">
         <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl font-bold text-gray-900">{studyContent.title}</h1>
-          <div className="flex items-center space-x-4 text-sm text-gray-600">
+          <h1 className="text-2xl font-bold text-foreground">{studyContent.title}</h1>
+          <div className="flex items-center space-x-4 text-sm text-muted-foreground">
             <div className="flex items-center space-x-1">
               <Clock className="w-4 h-4" />
               <span>{Math.round((Date.now() - startTime) / 60000)} min</span>
@@ -270,7 +270,7 @@ export default function StudyParticipatePage() {
 
         {/* Progress Bar */}
         <div className="space-y-2">
-          <div className="flex justify-between text-sm text-gray-600">
+          <div className="flex justify-between text-sm text-muted-foreground">
             <span>Question {getCurrentQuestionNumber()} of {totalQuestions}</span>
             <span>{Math.round(progress)}% complete</span>
           </div>
@@ -280,11 +280,11 @@ export default function StudyParticipatePage() {
 
       {/* Section Header */}
       <div className="mb-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-2">
+        <h2 className="text-xl font-semibold text-foreground mb-2">
           {currentSection.title}
         </h2>
         {currentSection.instructions && (
-          <p className="text-gray-600">{currentSection.instructions}</p>
+          <p className="text-muted-foreground">{currentSection.instructions}</p>
         )}
       </div>
 
@@ -310,7 +310,7 @@ export default function StudyParticipatePage() {
           <span>Previous</span>
         </Button>
 
-        <div className="text-sm text-gray-500">
+        <div className="text-sm text-muted-foreground">
           {studyContent.settings.allowBack ? 'You can go back to previous questions' : 'Forward only'}
         </div>
 
@@ -330,7 +330,7 @@ export default function StudyParticipatePage() {
 
       {/* Required field notice */}
       {currentQuestion.required && !responses[currentQuestion.id] && (
-        <p className="text-center text-sm text-red-600 mt-4">
+        <p className="text-center text-sm text-destructive mt-4">
           This question is required to continue
         </p>
       )}

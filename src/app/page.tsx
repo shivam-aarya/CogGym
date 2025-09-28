@@ -37,10 +37,10 @@ export default function Home() {
     <div className="container mx-auto px-4 py-16">
       {/* Hero Section */}
       <div className="text-center mb-16">
-        <h1 className="text-5xl font-bold text-gray-900 mb-6">
-          Welcome to <span className="text-blue-600">StudyHub</span>
+        <h1 className="text-5xl font-bold text-foreground mb-6">
+          Welcome to <span className="text-primary">StudyHub</span>
         </h1>
-        <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+        <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
           Participate in research studies and contribute to scientific knowledge.
           Join thousands of participants helping researchers understand human behavior,
           cognition, and user experience.
@@ -114,32 +114,32 @@ export default function Home() {
 
       {/* How It Works Section */}
       <div className="text-center mb-16">
-        <h2 className="text-3xl font-bold text-gray-900 mb-8">How It Works</h2>
+        <h2 className="text-3xl font-bold text-foreground mb-8">How It Works</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="space-y-4">
-            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
-              <span className="text-2xl font-bold text-blue-600">1</span>
+            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+              <span className="text-2xl font-bold text-primary">1</span>
             </div>
-            <h3 className="text-xl font-semibold">Browse Studies</h3>
-            <p className="text-gray-600">
+            <h3 className="text-xl font-semibold text-foreground">Browse Studies</h3>
+            <p className="text-muted-foreground">
               Explore available research studies that match your interests and availability.
             </p>
           </div>
           <div className="space-y-4">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-              <span className="text-2xl font-bold text-green-600">2</span>
+            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+              <span className="text-2xl font-bold text-primary">2</span>
             </div>
-            <h3 className="text-xl font-semibold">Participate</h3>
-            <p className="text-gray-600">
+            <h3 className="text-xl font-semibold text-foreground">Participate</h3>
+            <p className="text-muted-foreground">
               Complete studies by answering questions, performing tasks, or providing feedback.
             </p>
           </div>
           <div className="space-y-4">
-            <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto">
-              <span className="text-2xl font-bold text-purple-600">3</span>
+            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+              <span className="text-2xl font-bold text-primary">3</span>
             </div>
-            <h3 className="text-xl font-semibold">Contribute</h3>
-            <p className="text-gray-600">
+            <h3 className="text-xl font-semibold text-foreground">Contribute</h3>
+            <p className="text-muted-foreground">
               Your anonymous responses help researchers make important discoveries.
             </p>
           </div>
@@ -147,11 +147,11 @@ export default function Home() {
       </div>
 
       {/* CTA Section */}
-      <div className="text-center bg-blue-50 rounded-lg p-12">
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">
+      <div className="text-center bg-muted/50 rounded-lg p-12">
+        <h2 className="text-3xl font-bold text-foreground mb-4">
           Ready to Make a Difference?
         </h2>
-        <p className="text-lg text-gray-600 mb-8">
+        <p className="text-lg text-muted-foreground mb-8">
           Join our community of research participants and start contributing to science today.
         </p>
         <Link href="/auth/signin">

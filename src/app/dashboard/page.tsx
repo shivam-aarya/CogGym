@@ -74,12 +74,12 @@ export default function DashboardPage() {
     <div className="container mx-auto px-4 py-8 max-w-7xl">
       {/* Welcome Section */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+        <h1 className="text-3xl font-bold text-foreground mb-2">
           Welcome back{session?.user?.name ? `, ${session.user.name}` : ''}!
         </h1>
-        <p className="text-lg text-gray-600 flex items-center">
+        <p className="text-lg text-muted-foreground flex items-center">
           Ready to contribute to research?
-          <Target className="w-5 h-5 ml-2 text-blue-600" />
+          <Target className="w-5 h-5 ml-2 text-primary" />
         </p>
       </div>
 
@@ -128,12 +128,12 @@ export default function DashboardPage() {
       {/* Studies Section */}
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-gray-900 flex items-center">
+          <h2 className="text-2xl font-bold text-foreground flex items-center">
             📊 Available Studies
           </h2>
           <div className="flex items-center space-x-2">
-            <Filter className="w-4 h-4 text-gray-500" />
-            <span className="text-sm text-gray-500">Filter:</span>
+            <Filter className="w-4 h-4 text-muted-foreground" />
+            <span className="text-sm text-muted-foreground">Filter:</span>
             <div className="flex space-x-2">
               {[
                 { key: 'all', label: 'All' },
@@ -162,7 +162,7 @@ export default function DashboardPage() {
 
         {filteredStudies.length === 0 && (
           <div className="text-center py-12">
-            <div className="text-gray-500 mb-4">
+            <div className="text-muted-foreground mb-4">
               <Search className="w-12 h-12 mx-auto mb-4 opacity-50" />
               <p className="text-lg">No studies match your current filter</p>
               <p className="text-sm">Try adjusting your filter options</p>
@@ -174,7 +174,7 @@ export default function DashboardPage() {
 
         {/* Completed Studies Section */}
         <div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+          <h3 className="text-xl font-semibold text-foreground mb-4 flex items-center">
             ✅ Your Completed Studies ({completedStudies})
           </h3>
           <Button variant="outline" className="mb-4">

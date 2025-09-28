@@ -58,7 +58,7 @@ export function StudyCard({ study }: StudyCardProps) {
       </CardHeader>
 
       <CardContent className="space-y-4">
-        <div className="flex items-center space-x-4 text-sm text-gray-600">
+        <div className="flex items-center space-x-4 text-sm text-muted-foreground">
           <div className="flex items-center space-x-1">
             <Clock className="w-4 h-4" />
             <span>{duration} min</span>

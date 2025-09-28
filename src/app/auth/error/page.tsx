@@ -20,11 +20,11 @@ export default function AuthErrorPage() {
   const errorMessage = error ? errorMessages[error] || errorMessages.Default : errorMessages.Default
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-background py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <Card>
           <CardHeader className="text-center">
-            <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+            <AlertCircle className="w-12 h-12 text-destructive mx-auto mb-4" />
             <CardTitle className="text-2xl">Authentication Error</CardTitle>
             <CardDescription>
               There was a problem signing you in
@@ -32,7 +32,7 @@ export default function AuthErrorPage() {
           </CardHeader>
 
           <CardContent className="space-y-6 text-center">
-            <p className="text-gray-600">{errorMessage}</p>
+            <p className="text-muted-foreground">{errorMessage}</p>
 
             <div className="space-y-3">
               <Link href="/auth/signin">
@@ -49,7 +49,7 @@ export default function AuthErrorPage() {
               </Link>
             </div>
 
-            <div className="text-sm text-gray-500">
+            <div className="text-sm text-muted-foreground">
               <p>If this problem persists, please contact support.</p>
             </div>
           </CardContent>

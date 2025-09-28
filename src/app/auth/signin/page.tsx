@@ -58,11 +58,11 @@ export default function SignInPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-background py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         {/* Back to home */}
         <div className="text-center">
-          <Link href="/" className="inline-flex items-center text-blue-600 hover:text-blue-800">
+          <Link href="/" className="inline-flex items-center text-primary hover:text-primary/80">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to StudyHub
           </Link>
@@ -111,7 +111,7 @@ export default function SignInPage() {
                     <Separator className="w-full" />
                   </div>
                   <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-white px-2 text-gray-500">Or continue with</span>
+                    <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
                   </div>
                 </div>
 
@@ -133,7 +133,7 @@ export default function SignInPage() {
             )}
 
             {/* Demo Notice */}
-            <div className="text-center text-sm text-gray-600 bg-blue-50 p-3 rounded-lg">
+            <div className="text-center text-sm text-muted-foreground bg-muted p-3 rounded-lg">
               <p className="font-medium mb-1">Demo Mode</p>
               <p>Just enter any email address to create an account and explore the platform!</p>
             </div>
@@ -141,7 +141,7 @@ export default function SignInPage() {
         </Card>
 
         {/* Additional Info */}
-        <div className="text-center text-sm text-gray-600">
+        <div className="text-center text-sm text-muted-foreground">
           <p>
             By signing in, you agree to participate in research studies in accordance with
             our privacy guidelines and ethical research standards.

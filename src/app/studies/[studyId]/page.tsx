@@ -54,7 +54,7 @@ export default function StudyDetailPage() {
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       {/* Back Navigation */}
       <div className="mb-6">
-        <Link href="/dashboard" className="flex items-center text-blue-600 hover:text-blue-800">
+        <Link href="/dashboard" className="flex items-center text-primary hover:text-primary/80">
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back to Studies
         </Link>
@@ -63,12 +63,12 @@ export default function StudyDetailPage() {
       {/* Study Header */}
       <div className="mb-8">
         <div className="flex items-start justify-between mb-4">
-          <h1 className="text-3xl font-bold text-gray-900">{study.title}</h1>
+          <h1 className="text-3xl font-bold text-foreground">{study.title}</h1>
           <Badge variant={study.status === 'ACTIVE' ? 'default' : 'secondary'}>
             {study.status}
           </Badge>
         </div>
-        <p className="text-lg text-gray-600">
+        <p className="text-lg text-muted-foreground">
           {study.description}
         </p>
       </div>
@@ -83,34 +83,34 @@ export default function StudyDetailPage() {
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="flex items-center space-x-3">
-              <Clock className="w-5 h-5 text-gray-500" />
+              <Clock className="w-5 h-5 text-muted-foreground" />
               <div>
                 <p className="font-medium">Duration</p>
-                <p className="text-sm text-gray-600">{study.settings.timeLimit} minutes</p>
+                <p className="text-sm text-muted-foreground">{study.settings.timeLimit} minutes</p>
               </div>
             </div>
 
             <div className="flex items-center space-x-3">
-              <Users className="w-5 h-5 text-gray-500" />
+              <Users className="w-5 h-5 text-muted-foreground" />
               <div>
                 <p className="font-medium">Participants</p>
-                <p className="text-sm text-gray-600">{study._count.sessions} people have joined</p>
+                <p className="text-sm text-muted-foreground">{study._count.sessions} people have joined</p>
               </div>
             </div>
 
             <div className="flex items-center space-x-3">
-              <Calendar className="w-5 h-5 text-gray-500" />
+              <Calendar className="w-5 h-5 text-muted-foreground" />
               <div>
                 <p className="font-medium">Available until</p>
-                <p className="text-sm text-gray-600">December 31, 2024</p>
+                <p className="text-sm text-muted-foreground">December 31, 2024</p>
               </div>
             </div>
 
             <div className="flex items-center space-x-3">
-              <CheckCircle className="w-5 h-5 text-gray-500" />
+              <CheckCircle className="w-5 h-5 text-muted-foreground" />
               <div>
                 <p className="font-medium">Compensation</p>
-                <p className="text-sm text-gray-600">Research contribution points</p>
+                <p className="text-sm text-muted-foreground">Research contribution points</p>
               </div>
             </div>
           </div>
@@ -152,7 +152,7 @@ export default function StudyDetailPage() {
             <CardTitle>Instructions</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-gray-700 leading-relaxed">
+            <p className="text-foreground leading-relaxed">
               {study.content.instructions}
             </p>
           </CardContent>
@@ -195,15 +195,15 @@ export default function StudyDetailPage() {
           </div>
 
           {!session && (
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+            <div className="bg-muted border border-border rounded-lg p-4">
               <div className="flex items-start space-x-3">
-                <AlertCircle className="w-5 h-5 text-yellow-600 mt-0.5" />
+                <AlertCircle className="w-5 h-5 text-primary mt-0.5" />
                 <div>
-                  <p className="text-sm font-medium text-yellow-800">Sign in recommended</p>
-                  <p className="text-sm text-yellow-700">
+                  <p className="text-sm font-medium text-foreground">Sign in recommended</p>
+                  <p className="text-sm text-muted-foreground">
                     While you can participate as a guest, signing in allows you to save your progress and track your contributions.
                   </p>
-                  <Link href="/auth/signin" className="text-sm text-yellow-800 underline mt-1 inline-block">
+                  <Link href="/auth/signin" className="text-sm text-primary underline mt-1 inline-block">
                     Sign in here
                   </Link>
                 </div>
@@ -221,7 +221,7 @@ export default function StudyDetailPage() {
               <CheckCircle className="w-6 h-6" />
               <span className="text-lg font-medium">You have already completed this study</span>
             </div>
-            <p className="text-gray-600">Thank you for your participation!</p>
+            <p className="text-muted-foreground">Thank you for your participation!</p>
             <Link href="/dashboard">
               <Button variant="outline">
                 Return to Dashboard
@@ -241,7 +241,7 @@ export default function StudyDetailPage() {
         )}
 
         {!hasConsented && (
-          <p className="text-sm text-gray-500 mt-2">
+          <p className="text-sm text-muted-foreground mt-2">
             Please complete the consent section above to begin
           </p>
         )}
