@@ -1,4 +1,4 @@
-# StudyHub - Research Study Platform
+# CogGym - Research Study Platform
 
 A modern, anonymous research study platform for conducting user research. Built with Next.js, TypeScript, and PostgreSQL.
 

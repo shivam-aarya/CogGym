@@ -5,8 +5,8 @@
  * Uses a combination of browser fingerprinting and localStorage for session tracking.
  */
 
-const ANONYMOUS_ID_KEY = 'studyhub_anonymous_id'
-const SESSION_PREFIX = 'studyhub_session_'
+const ANONYMOUS_ID_KEY = 'coggym_anonymous_id'
+const SESSION_PREFIX = 'coggym_session_'
 
 interface SessionData {
   sessionId: string

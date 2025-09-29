@@ -11,8 +11,8 @@ export function Navbar() {
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2">
-              <span className="text-2xl">🧪</span>
-              <span className="text-xl font-bold text-foreground">StudyHub</span>
+              <span className="text-2xl">🧠</span>
+              <span className="text-xl font-bold text-foreground">CogGym</span>
             </Link>
           </div>
 

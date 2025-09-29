@@ -9,7 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "StudyHub - Research Study Platform",
+  title: "CogGym - Research Study Platform",
   description: "Participate in research studies and contribute to scientific knowledge",
 };
 

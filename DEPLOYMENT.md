@@ -1,6 +1,6 @@
 # Deployment Guide - Vercel
 
-This guide explains how to deploy the StudyHub platform to Vercel with external studies.
+This guide explains how to deploy the CogGym platform to Vercel with external studies.
 
 ## Overview
 
