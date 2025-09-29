@@ -7,6 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// User model kept for potential future use, but no longer required for participation
 model User {
   id        String   @id @default(cuid())
   email     String   @unique
@@ -42,26 +43,28 @@ model Study {
 
 model StudyResponse {
   id         String   @id @default(cuid())
-  userId     String
+  userId     String?  // Optional - for anonymous participation
   studyId    String
   sessionId  String?
+  anonymousId String? // Track anonymous users via browser fingerprint or session
 
   questionId String
   response   Json
   timestamp  DateTime @default(now())
 
-  user    User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user    User?         @relation(fields: [userId], references: [id], onDelete: Cascade)
   study   Study         @relation(fields: [studyId], references: [id], onDelete: Cascade)
   session StudySession? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
 
-  @@unique([userId, studyId, questionId])
+  @@unique([studyId, questionId, sessionId])
   @@map("study_responses")
 }
 
 model StudySession {
   id          String        @id @default(cuid())
-  userId      String
+  userId      String?       // Optional - for anonymous participation
   studyId     String
+  anonymousId String?       // Track anonymous users
 
   status      SessionStatus @default(IN_PROGRESS)
   currentStep Int           @default(0)
@@ -72,11 +75,10 @@ model StudySession {
 
   metadata    Json?
 
-  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User?           @relation(fields: [userId], references: [id], onDelete: Cascade)
   study     Study           @relation(fields: [studyId], references: [id], onDelete: Cascade)
   responses StudyResponse[]
 
-  @@unique([userId, studyId])
   @@map("study_sessions")
 }
 

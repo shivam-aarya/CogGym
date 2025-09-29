@@ -1,25 +1,25 @@
 # StudyHub - Research Study Platform
 
-A modern, scalable platform for conducting user research studies. Built with Next.js, TypeScript, and PostgreSQL.
+A modern, anonymous research study platform for conducting user research. Built with Next.js, TypeScript, and PostgreSQL.
 
 ## Features
 
 - 🧪 **Flexible Study System** - Support for multiple question types (text, multiple choice, rating scales, etc.)
-- 🔐 **Secure Authentication** - NextAuth.js with email and OAuth providers
+- 🔓 **Anonymous Participation** - No authentication required - participants can join studies instantly
 - 📊 **Progress Tracking** - Real-time progress indicators and auto-save functionality
 - 📱 **Responsive Design** - Works seamlessly on desktop, tablet, and mobile
-- 🎯 **Privacy-First** - Anonymous responses with GDPR-compliant data handling
-- ⚡ **Modern Tech Stack** - Next.js 14, TypeScript, Tailwind CSS, Prisma
+- 🎯 **Privacy-First** - Completely anonymous responses with GDPR-compliant data handling
+- ⚡ **Modern Tech Stack** - Next.js 15, TypeScript, Tailwind CSS, Prisma
 
 ## Tech Stack
 
-- **Framework**: Next.js 14 with App Router
+- **Framework**: Next.js 15 with App Router
 - **Language**: TypeScript
 - **Database**: PostgreSQL with Prisma ORM
-- **Authentication**: NextAuth.js
 - **Styling**: Tailwind CSS + Shadcn/ui
 - **State Management**: Zustand
 - **Forms**: React Hook Form + Zod validation
+- **Session Management**: Browser-based anonymous sessions
 
 ## Getting Started
 
@@ -47,11 +47,9 @@ A modern, scalable platform for conducting user research studies. Built with Nex
    cp .env.example .env.local
    ```
 
-   Edit `.env.local` with your database URL and other configuration:
+   Edit `.env.local` with your database URL:
    ```env
    DATABASE_URL="postgresql://username:password@localhost:5432/studyplatform"
-   NEXTAUTH_SECRET="your-nextauth-secret"
-   NEXTAUTH_URL="http://localhost:3000"
    ```
 
 4. **Set up the database**
@@ -93,19 +91,18 @@ Visit [http://localhost:3000](http://localhost:3000) to see the application.
 ```
 src/
 ├── app/                     # Next.js App Router pages
-│   ├── (auth)/             # Authentication routes
-│   ├── dashboard/          # Dashboard page
+│   ├── page.tsx            # Main landing/study listing page
 │   ├── studies/            # Study-related pages
-│   └── api/                # API routes
+│   │   └── [studyId]/      # Dynamic study routes
+│   └── layout.tsx          # Root layout
 ├── components/             # Reusable components
 │   ├── ui/                 # Shadcn/ui components
-│   ├── layout/             # Layout components
-│   ├── study/              # Study-specific components
-│   └── forms/              # Form components
+│   ├── layout/             # Layout components (navbar, providers)
+│   └── study/              # Study-specific components
 ├── lib/                    # Utility libraries
-│   ├── auth.ts             # NextAuth configuration
+│   ├── anonymous-session.ts # Anonymous session management
 │   ├── db.ts               # Prisma client
-│   └── validations/        # Zod schemas
+│   └── utils.ts            # Helper utilities
 ├── types/                  # TypeScript type definitions
 ├── hooks/                  # Custom React hooks
 └── stores/                 # Zustand stores
@@ -115,10 +112,10 @@ src/
 
 The application uses a flexible JSON-based content system that supports various study formats:
 
-- **Users** - Participant information and authentication
+- **Users** - Optional user table (kept for future extension, but not required for participation)
 - **Studies** - Research studies with flexible JSON content
-- **StudyResponses** - Individual question responses
-- **StudySessions** - User session tracking and progress
+- **StudyResponses** - Individual question responses (anonymous - no user required)
+- **StudySessions** - Anonymous session tracking and progress
 
 ## Study Content Format
 
@@ -153,13 +150,15 @@ Example:
 }
 ```
 
-## Authentication
+## Anonymous Participation
 
-The platform supports multiple authentication methods:
+The platform is designed for completely anonymous participation:
 
-- **Email/Password** - Traditional account creation
-- **Google OAuth** - Social login (configure in environment)
-- **Guest Mode** - Anonymous participation for public studies
+- **No Login Required** - Users can participate in any study without creating an account
+- **Browser-Based Sessions** - Anonymous sessions are tracked using browser fingerprinting and localStorage
+- **Privacy-First** - No personally identifiable information is collected
+- **Session Management** - Progress is auto-saved locally and can be resumed
+- **Participation Tracking** - localStorage prevents duplicate participation in the same study
 
 ## Deployment
 

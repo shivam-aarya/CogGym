@@ -2,15 +2,15 @@
 
 import { useParams, useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
-import { useSession } from 'next-auth/react'
 import { QuestionRenderer } from '@/components/study/question-renderer'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ArrowLeft, ArrowRight, CheckCircle, Clock, Save } from 'lucide-react'
+import { getAnonymousId, saveSessionData, markStudyCompleted, clearSessionData } from '@/lib/anonymous-session'
 
 // Mock study data with sample questions
-const mockStudyContent = {
+const mockStudyContent: any = {
   version: '1.0',
   title: 'User Experience Design Survey',
   description: 'Help researchers understand how people interact with digital interfaces.',
@@ -134,9 +134,11 @@ const mockStudyContent = {
 export default function StudyParticipatePage() {
   const params = useParams()
   const router = useRouter()
-  const { data: session } = useSession()
 
   const studyId = params.studyId as string
+  const anonymousId = getAnonymousId()
+  const sessionId = `session_${anonymousId}_${studyId}_${Date.now()}`
+
   const [studyContent] = useState(mockStudyContent)
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0)
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
@@ -149,18 +151,23 @@ export default function StudyParticipatePage() {
   const currentQuestion = currentSection?.questions[currentQuestionIndex]
 
   // Calculate progress
-  const totalQuestions = studyContent.sections.reduce((sum, section) => sum + section.questions.length, 0)
+  const totalQuestions = studyContent.sections.reduce((sum: number, section: any) => sum + section.questions.length, 0)
   const answeredQuestions = Object.keys(responses).length
   const progress = (answeredQuestions / totalQuestions) * 100
 
   // Auto-save responses
   useEffect(() => {
     if (studyContent.settings.autoSave && Date.now() - lastSaveTime > 30000) { // Save every 30 seconds
-      // In real app, save to database
+      saveSessionData(studyId, sessionId, {
+        responses,
+        currentSectionIndex,
+        currentQuestionIndex,
+        anonymousId
+      })
       console.log('Auto-saving responses:', responses)
       setLastSaveTime(Date.now())
     }
-  }, [responses, lastSaveTime, studyContent.settings.autoSave])
+  }, [responses, lastSaveTime, studyContent.settings.autoSave, studyId, sessionId, currentSectionIndex, currentQuestionIndex, anonymousId])
 
   const handleResponseChange = (questionId: string, value: any) => {
     setResponses(prev => ({
@@ -201,16 +208,27 @@ export default function StudyParticipatePage() {
   }
 
   const handleComplete = async () => {
-    // In real app, submit responses to database
+    // Submit responses to database
     console.log('Submitting study responses:', {
       studyId,
-      userId: session?.user?.id,
+      sessionId,
+      anonymousId,
       responses,
       completedAt: new Date(),
       duration: Date.now() - startTime
     })
 
-    router.push(`/studies/${studyId}/complete`)
+    // Mark study as completed in localStorage
+    markStudyCompleted(studyId)
+    clearSessionData(studyId)
+
+    // In real app, send to API endpoint
+    // await fetch('/api/studies/submit', { method: 'POST', body: JSON.stringify(...) })
+
+    // Redirect back to home
+    setTimeout(() => {
+      router.push('/')
+    }, 2000)
   }
 
   const getCurrentQuestionNumber = () => {

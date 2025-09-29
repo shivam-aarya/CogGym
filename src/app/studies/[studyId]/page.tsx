@@ -2,13 +2,13 @@
 
 import { useParams } from 'next/navigation'
 import { useState, useEffect } from 'react'
-import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import { ArrowLeft, Clock, Users, Calendar, Shield, CheckCircle, AlertCircle } from 'lucide-react'
+import { ArrowLeft, Clock, Users, Calendar, Shield, CheckCircle } from 'lucide-react'
+import { hasParticipated } from '@/lib/anonymous-session'
 
 // Mock study data - will be replaced with API call
 const mockStudy = {
@@ -34,12 +34,10 @@ const mockStudy = {
 
 export default function StudyDetailPage() {
   const params = useParams()
-  const { data: session } = useSession()
   const [study, setStudy] = useState(mockStudy)
   const [hasConsented, setHasConsented] = useState(false)
-  const [hasParticipated, setHasParticipated] = useState(false)
-
   const studyId = params.studyId as string
+  const alreadyParticipated = hasParticipated(studyId)
 
   useEffect(() => {
     // In real app, fetch study data based on studyId
@@ -54,7 +52,7 @@ export default function StudyDetailPage() {
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       {/* Back Navigation */}
       <div className="mb-6">
-        <Link href="/dashboard" className="flex items-center text-primary hover:text-primary/80">
+        <Link href="/" className="flex items-center text-primary hover:text-primary/80">
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back to Studies
         </Link>
@@ -193,38 +191,21 @@ export default function StudyDetailPage() {
               </span>
             </label>
           </div>
-
-          {!session && (
-            <div className="bg-muted border border-border rounded-lg p-4">
-              <div className="flex items-start space-x-3">
-                <AlertCircle className="w-5 h-5 text-primary mt-0.5" />
-                <div>
-                  <p className="text-sm font-medium text-foreground">Sign in recommended</p>
-                  <p className="text-sm text-muted-foreground">
-                    While you can participate as a guest, signing in allows you to save your progress and track your contributions.
-                  </p>
-                  <Link href="/auth/signin" className="text-sm text-primary underline mt-1 inline-block">
-                    Sign in here
-                  </Link>
-                </div>
-              </div>
-            </div>
-          )}
         </CardContent>
       </Card>
 
       {/* Action Section */}
       <div className="text-center">
-        {hasParticipated ? (
+        {alreadyParticipated ? (
           <div className="space-y-4">
             <div className="flex items-center justify-center space-x-2 text-green-600">
               <CheckCircle className="w-6 h-6" />
               <span className="text-lg font-medium">You have already completed this study</span>
             </div>
             <p className="text-muted-foreground">Thank you for your participation!</p>
-            <Link href="/dashboard">
+            <Link href="/">
               <Button variant="outline">
-                Return to Dashboard
+                Return to Studies
               </Button>
             </Link>
           </div>
@@ -240,7 +221,7 @@ export default function StudyDetailPage() {
           </Link>
         )}
 
-        {!hasConsented && (
+        {!hasConsented && !alreadyParticipated && (
           <p className="text-sm text-muted-foreground mt-2">
             Please complete the consent section above to begin
           </p>

@@ -1,60 +1,80 @@
 'use client'
 
-import { useSession } from 'next-auth/react'
-import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
+import { useState } from 'react'
+import { StudyCard } from '@/components/study/study-card'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Users, Target, Shield, Zap } from 'lucide-react'
+import { Users, Target, Shield, Zap, Filter } from 'lucide-react'
+
+// Mock data - will be replaced with API calls
+const mockStudies = [
+  {
+    id: '1',
+    title: 'UX Design Survey',
+    description: 'Help researchers understand how people interact with digital interfaces. Your insights will contribute to better app and website design.',
+    status: 'ACTIVE',
+    createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+    content: {
+      version: '1.0',
+      title: 'UX Design Survey',
+      description: 'Help researchers understand how people interact with digital interfaces.',
+      sections: []
+    },
+    settings: { timeLimit: 10 },
+    _count: { sessions: 127 }
+  },
+  {
+    id: '2',
+    title: 'Decision Making Study',
+    description: 'Participate in research about how people make choices under different conditions.',
+    status: 'ACTIVE',
+    createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
+    content: {
+      version: '1.0',
+      title: 'Decision Making Study',
+      sections: []
+    },
+    settings: { timeLimit: 15 },
+    _count: { sessions: 89 }
+  },
+  {
+    id: '3',
+    title: 'Memory Research',
+    description: 'Contribute to cognitive science research by participating in memory-related tasks.',
+    status: 'ACTIVE',
+    createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000),
+    content: {
+      version: '1.0',
+      title: 'Memory Research',
+      sections: []
+    },
+    settings: { timeLimit: 20 },
+    _count: { sessions: 203 }
+  }
+]
 
 export default function Home() {
-  const { data: session, status } = useSession()
-  const router = useRouter()
+  const [studies] = useState(mockStudies)
+  const [filter, setFilter] = useState('all')
 
-  useEffect(() => {
-    if (session) {
-      router.push('/dashboard')
-    }
-  }, [session, router])
-
-  if (status === 'loading') {
-    return (
-      <div className="container mx-auto px-4 py-16 text-center">
-        <div className="animate-pulse">
-          <div className="h-8 bg-gray-200 rounded w-64 mx-auto mb-4"></div>
-          <div className="h-4 bg-gray-200 rounded w-96 mx-auto"></div>
-        </div>
-      </div>
-    )
-  }
-
-  if (session) {
-    return null // Will redirect to dashboard
-  }
+  const filteredStudies = studies.filter(study => {
+    if (filter === 'new') return Date.now() - study.createdAt.getTime() < 7 * 24 * 60 * 60 * 1000
+    if (filter === 'quick') return (study.settings?.timeLimit || 0) <= 10
+    if (filter === 'long') return (study.settings?.timeLimit || 0) > 15
+    return true
+  })
 
   return (
     <div className="container mx-auto px-4 py-16">
       {/* Hero Section */}
-      <div className="text-center mb-16">
+      <div className="text-center mb-12">
         <h1 className="text-5xl font-bold text-foreground mb-6">
           Welcome to <span className="text-primary">StudyHub</span>
         </h1>
         <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-          Participate in research studies and contribute to scientific knowledge.
-          Join thousands of participants helping researchers understand human behavior,
-          cognition, and user experience.
+          Participate anonymously in research studies and contribute to scientific knowledge.
+          Help researchers understand human behavior, cognition, and user experience.
         </p>
-        <div className="flex justify-center space-x-4">
-          <Link href="/auth/signin">
-            <Button size="lg" className="px-8">
-              Get Started
-            </Button>
-          </Link>
-          <Button variant="outline" size="lg" className="px-8">
-            Learn More
-          </Button>
-        </div>
       </div>
 
       {/* Features Section */}
@@ -92,7 +112,7 @@ export default function Home() {
           </CardHeader>
           <CardContent>
             <CardDescription>
-              Your responses are anonymous and securely stored.
+              Your responses are completely anonymous and securely stored.
               We follow strict privacy guidelines and ethical research standards.
             </CardDescription>
           </CardContent>
@@ -101,64 +121,59 @@ export default function Home() {
         <Card className="text-center">
           <CardHeader>
             <Users className="w-12 h-12 text-orange-600 mx-auto mb-4" />
-            <CardTitle>Join the Community</CardTitle>
+            <CardTitle>No Login Required</CardTitle>
           </CardHeader>
           <CardContent>
             <CardDescription>
-              Connect with researchers and other participants.
-              Track your contributions and impact over time.
+              Jump right in and participate in any study anonymously.
+              No account creation or personal information needed.
             </CardDescription>
           </CardContent>
         </Card>
       </div>
 
-      {/* How It Works Section */}
-      <div className="text-center mb-16">
-        <h2 className="text-3xl font-bold text-foreground mb-8">How It Works</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="space-y-4">
-            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
-              <span className="text-2xl font-bold text-primary">1</span>
-            </div>
-            <h3 className="text-xl font-semibold text-foreground">Browse Studies</h3>
-            <p className="text-muted-foreground">
-              Explore available research studies that match your interests and availability.
-            </p>
+      {/* Available Studies Section */}
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-3xl font-bold text-foreground">Available Studies</h2>
+            <p className="text-muted-foreground mt-2">Choose a study to get started</p>
           </div>
-          <div className="space-y-4">
-            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
-              <span className="text-2xl font-bold text-primary">2</span>
+          <div className="flex items-center space-x-2">
+            <Filter className="w-4 h-4 text-muted-foreground" />
+            <span className="text-sm text-muted-foreground">Filter:</span>
+            <div className="flex space-x-2">
+              {[
+                { key: 'all', label: 'All' },
+                { key: 'new', label: 'New' },
+                { key: 'quick', label: 'Quick' },
+                { key: 'long', label: 'In-depth' }
+              ].map(({ key, label }) => (
+                <Button
+                  key={key}
+                  variant={filter === key ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setFilter(key)}
+                >
+                  {label}
+                </Button>
+              ))}
             </div>
-            <h3 className="text-xl font-semibold text-foreground">Participate</h3>
-            <p className="text-muted-foreground">
-              Complete studies by answering questions, performing tasks, or providing feedback.
-            </p>
-          </div>
-          <div className="space-y-4">
-            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
-              <span className="text-2xl font-bold text-primary">3</span>
-            </div>
-            <h3 className="text-xl font-semibold text-foreground">Contribute</h3>
-            <p className="text-muted-foreground">
-              Your anonymous responses help researchers make important discoveries.
-            </p>
           </div>
         </div>
-      </div>
 
-      {/* CTA Section */}
-      <div className="text-center bg-muted/50 rounded-lg p-12">
-        <h2 className="text-3xl font-bold text-foreground mb-4">
-          Ready to Make a Difference?
-        </h2>
-        <p className="text-lg text-muted-foreground mb-8">
-          Join our community of research participants and start contributing to science today.
-        </p>
-        <Link href="/auth/signin">
-          <Button size="lg" className="px-8">
-            Start Participating
-          </Button>
-        </Link>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredStudies.map((study) => (
+            <StudyCard key={study.id} study={study} />
+          ))}
+        </div>
+
+        {filteredStudies.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-lg text-muted-foreground">No studies match your current filter</p>
+            <p className="text-sm text-muted-foreground mt-2">Try adjusting your filter options</p>
+          </div>
+        )}
       </div>
     </div>
   )
