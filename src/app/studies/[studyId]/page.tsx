@@ -7,41 +7,103 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import { ArrowLeft, Clock, Users, Calendar, Shield, CheckCircle } from 'lucide-react'
+import { ArrowLeft, Clock, Users, Calendar, Shield, CheckCircle, ExternalLink } from 'lucide-react'
 import { hasParticipated } from '@/lib/anonymous-session'
 
 // Mock study data - will be replaced with API call
-const mockStudy = {
-  id: '1',
-  title: 'User Experience Design Survey',
-  description: 'Help researchers understand how people interact with digital interfaces. Your insights will contribute to better app and website design.',
-  status: 'ACTIVE',
-  createdAt: new Date('2024-01-15'),
-  content: {
-    version: '1.0',
-    title: 'User Experience Design Survey',
-    description: 'Help researchers understand how people interact with digital interfaces.',
-    instructions: 'Please answer all questions honestly. Your responses are completely anonymous and will help improve digital interface design.',
-    sections: []
+// In production, this would fetch based on studyId
+const mockStudies: Record<string, any> = {
+  '1': {
+    id: '1',
+    title: 'Phase Interface Study',
+    description: 'Participate in a cognitive research study exploring human perception and decision-making through interactive phase-based tasks.',
+    status: 'ACTIVE',
+    createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+    content: {
+      version: '1.0',
+      title: 'Phase Interface Study',
+      description: 'Explore human perception and decision-making through interactive tasks.',
+      instructions: 'You will be redirected to an external study platform. Please complete all tasks honestly and to the best of your ability.',
+      sections: []
+    },
+    settings: {
+      timeLimit: 15,
+      externalUrl: 'https://phase-interface.web.app/'
+    },
+    _count: { sessions: 234 }
   },
-  settings: {
-    timeLimit: 10,
-    allowBack: true,
-    showProgress: true
+  '2': {
+    id: '2',
+    title: 'Multi-Grid Game Study',
+    description: 'Help researchers understand spatial reasoning and problem-solving strategies by participating in interactive grid-based cognitive tasks.',
+    status: 'ACTIVE',
+    createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
+    content: {
+      version: '1.0',
+      title: 'Multi-Grid Game Study',
+      description: 'Study spatial reasoning through grid-based tasks.',
+      instructions: 'You will be redirected to an external study platform. Follow the on-screen instructions carefully.',
+      sections: []
+    },
+    settings: {
+      timeLimit: 20,
+      externalUrl: 'https://multi-grid-game-9ytj.vercel.app/'
+    },
+    _count: { sessions: 156 }
   },
-  _count: { sessions: 127 }
+  '3': {
+    id: '3',
+    title: 'Player Behavior Research',
+    description: 'Contribute to research on human-computer interaction and user engagement patterns through gameplay and interactive scenarios.',
+    status: 'ACTIVE',
+    createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+    content: {
+      version: '1.0',
+      title: 'Player Behavior Research',
+      description: 'Study human-computer interaction through gameplay.',
+      instructions: 'You will be redirected to an external study platform. Complete the interactive scenarios as naturally as possible.',
+      sections: []
+    },
+    settings: {
+      timeLimit: 25,
+      externalUrl: 'https://player-app-fbf4c.web.app/'
+    },
+    _count: { sessions: 189 }
+  },
+  '4': {
+    id: '4',
+    title: 'Human-Robot Interaction Study',
+    description: 'Participate in cutting-edge research exploring how humans interact with and respond to robotic assistants in various contexts.',
+    status: 'ACTIVE',
+    createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
+    content: {
+      version: '1.0',
+      title: 'Human-Robot Interaction Study',
+      description: 'Explore human interaction with robotic assistants.',
+      instructions: 'You will be redirected to an external study platform. Interact with the robotic assistant as you naturally would.',
+      sections: []
+    },
+    settings: {
+      timeLimit: 18,
+      externalUrl: 'https://assisthri.web.app/'
+    },
+    _count: { sessions: 312 }
+  }
 }
 
 export default function StudyDetailPage() {
   const params = useParams()
-  const [study, setStudy] = useState(mockStudy)
-  const [hasConsented, setHasConsented] = useState(false)
   const studyId = params.studyId as string
+  const [study, setStudy] = useState(mockStudies[studyId] || mockStudies['1'])
+  const [hasConsented, setHasConsented] = useState(false)
   const alreadyParticipated = hasParticipated(studyId)
+  const isExternal = !!study.settings?.externalUrl
 
   useEffect(() => {
     // In real app, fetch study data based on studyId
-    // setStudy(fetchStudyData(studyId))
+    // const fetchedStudy = await fetch(`/api/studies/${studyId}`).then(r => r.json())
+    // setStudy(fetchedStudy)
+    setStudy(mockStudies[studyId] || mockStudies['1'])
   }, [studyId])
 
   const handleConsentChange = (consented: boolean) => {
@@ -209,6 +271,28 @@ export default function StudyDetailPage() {
               </Button>
             </Link>
           </div>
+        ) : isExternal ? (
+          <a
+            href={study.settings.externalUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => {
+              if (hasConsented) {
+                // Mark as participated when they click to launch external study
+                // In a real app, this would be tracked better
+                console.log('Launching external study:', study.settings.externalUrl)
+              }
+            }}
+          >
+            <Button
+              size="lg"
+              className="px-12 flex items-center space-x-2"
+              disabled={!hasConsented}
+            >
+              <span>🚀 Launch External Study</span>
+              <ExternalLink className="w-5 h-5" />
+            </Button>
+          </a>
         ) : (
           <Link href={`/studies/${studyId}/participate`}>
             <Button
@@ -224,6 +308,12 @@ export default function StudyDetailPage() {
         {!hasConsented && !alreadyParticipated && (
           <p className="text-sm text-muted-foreground mt-2">
             Please complete the consent section above to begin
+          </p>
+        )}
+
+        {isExternal && hasConsented && !alreadyParticipated && (
+          <p className="text-sm text-muted-foreground mt-2">
+            You will be redirected to an external research platform
           </p>
         )}
       </div>

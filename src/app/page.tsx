@@ -6,50 +6,80 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Users, Target, Shield, Zap, Filter } from 'lucide-react'
 
-// Mock data - will be replaced with API calls
+// Mock data - external studies for demo purposes
+// These can be replaced with database-fetched studies in the future
 const mockStudies = [
   {
     id: '1',
-    title: 'UX Design Survey',
-    description: 'Help researchers understand how people interact with digital interfaces. Your insights will contribute to better app and website design.',
+    title: 'Phase Interface Study',
+    description: 'Participate in a cognitive research study exploring human perception and decision-making through interactive phase-based tasks.',
     status: 'ACTIVE',
     createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
     content: {
       version: '1.0',
-      title: 'UX Design Survey',
-      description: 'Help researchers understand how people interact with digital interfaces.',
+      title: 'Phase Interface Study',
+      description: 'Explore human perception and decision-making through interactive tasks.',
       sections: []
     },
-    settings: { timeLimit: 10 },
-    _count: { sessions: 127 }
+    settings: {
+      timeLimit: 15,
+      externalUrl: 'https://phase-interface.web.app/'
+    },
+    _count: { sessions: 234 }
   },
   {
     id: '2',
-    title: 'Decision Making Study',
-    description: 'Participate in research about how people make choices under different conditions.',
+    title: 'Multi-Grid Game Study',
+    description: 'Help researchers understand spatial reasoning and problem-solving strategies by participating in interactive grid-based cognitive tasks.',
     status: 'ACTIVE',
     createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
     content: {
       version: '1.0',
-      title: 'Decision Making Study',
+      title: 'Multi-Grid Game Study',
+      description: 'Study spatial reasoning through grid-based tasks.',
       sections: []
     },
-    settings: { timeLimit: 15 },
-    _count: { sessions: 89 }
+    settings: {
+      timeLimit: 20,
+      externalUrl: 'https://multi-grid-game-9ytj.vercel.app/'
+    },
+    _count: { sessions: 156 }
   },
   {
     id: '3',
-    title: 'Memory Research',
-    description: 'Contribute to cognitive science research by participating in memory-related tasks.',
+    title: 'Player Behavior Research',
+    description: 'Contribute to research on human-computer interaction and user engagement patterns through gameplay and interactive scenarios.',
     status: 'ACTIVE',
-    createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000),
+    createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
     content: {
       version: '1.0',
-      title: 'Memory Research',
+      title: 'Player Behavior Research',
+      description: 'Study human-computer interaction through gameplay.',
       sections: []
     },
-    settings: { timeLimit: 20 },
-    _count: { sessions: 203 }
+    settings: {
+      timeLimit: 25,
+      externalUrl: 'https://player-app-fbf4c.web.app/'
+    },
+    _count: { sessions: 189 }
+  },
+  {
+    id: '4',
+    title: 'Human-Robot Interaction Study',
+    description: 'Participate in cutting-edge research exploring how humans interact with and respond to robotic assistants in various contexts.',
+    status: 'ACTIVE',
+    createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
+    content: {
+      version: '1.0',
+      title: 'Human-Robot Interaction Study',
+      description: 'Explore human interaction with robotic assistants.',
+      sections: []
+    },
+    settings: {
+      timeLimit: 18,
+      externalUrl: 'https://assisthri.web.app/'
+    },
+    _count: { sessions: 312 }
   }
 ]
 

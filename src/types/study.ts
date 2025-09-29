@@ -119,6 +119,7 @@ export interface StudySettings {
   autoSave: boolean;
   completionMessage?: string;
   redirectUrl?: string;
+  externalUrl?: string; // URL for external studies hosted elsewhere
 }
 
 export interface MediaContent {
@@ -148,4 +149,9 @@ export interface StudyResponse {
   timestamp: Date;
   duration?: number;
   metadata?: Record<string, any>;
+}
+
+// Helper function to check if a study is external
+export function isExternalStudy(study: { settings?: StudySettings }): boolean {
+  return !!(study.settings?.externalUrl);
 }

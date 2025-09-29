@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Clock, Users, Star, Zap } from 'lucide-react'
+import { Clock, Users, Star, Zap, ExternalLink } from 'lucide-react'
 
 interface StudyCardProps {
   study: {
@@ -26,8 +26,10 @@ export function StudyCard({ study }: StudyCardProps) {
   const settings = study.settings as any
   const duration = settings?.timeLimit || 10
   const participantCount = study._count?.sessions || 0
+  const isExternal = !!settings?.externalUrl
 
   const getBadgeVariant = () => {
+    if (isExternal) return { icon: ExternalLink, text: 'External', variant: 'outline' as const }
     if (duration <= 10) return { icon: Zap, text: 'Quick', variant: 'default' as const }
     if (participantCount > 100) return { icon: Star, text: 'Popular', variant: 'secondary' as const }
     if (Date.now() - study.createdAt.getTime() < 7 * 24 * 60 * 60 * 1000) {

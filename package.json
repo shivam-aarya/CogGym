@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "build": "prisma generate && next build --turbopack",
     "start": "next start",
     "lint": "eslint",
     "type-check": "tsc --noEmit",
@@ -13,7 +13,7 @@
     "db:migrate": "prisma migrate dev",
     "db:seed": "tsx prisma/seed.ts",
     "db:studio": "prisma studio",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate || echo 'Warning: Prisma generate failed. Database may not be configured.'"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

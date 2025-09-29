@@ -5,11 +5,13 @@ A modern, anonymous research study platform for conducting user research. Built 
 ## Features
 
 - 🧪 **Flexible Study System** - Support for multiple question types (text, multiple choice, rating scales, etc.)
+- 🔗 **External Study Support** - Link to studies hosted on external platforms
 - 🔓 **Anonymous Participation** - No authentication required - participants can join studies instantly
 - 📊 **Progress Tracking** - Real-time progress indicators and auto-save functionality
 - 📱 **Responsive Design** - Works seamlessly on desktop, tablet, and mobile
 - 🎯 **Privacy-First** - Completely anonymous responses with GDPR-compliant data handling
 - ⚡ **Modern Tech Stack** - Next.js 15, TypeScript, Tailwind CSS, Prisma
+- 🚀 **Easy Deployment** - Deploy to Vercel without database for demo mode
 
 ## Tech Stack
 
@@ -42,17 +44,19 @@ A modern, anonymous research study platform for conducting user research. Built 
    npm install
    ```
 
-3. **Set up environment variables**
+3. **Set up environment variables (Optional for demo mode)**
    ```bash
    cp .env.example .env.local
    ```
 
-   Edit `.env.local` with your database URL:
+   For demo mode with external studies, no environment variables are needed!
+
+   For full database mode, edit `.env.local` with your database URL:
    ```env
    DATABASE_URL="postgresql://username:password@localhost:5432/studyplatform"
    ```
 
-4. **Set up the database**
+4. **Set up the database (Optional for demo mode)**
    ```bash
    # Generate Prisma client
    npm run db:generate
@@ -162,12 +166,24 @@ The platform is designed for completely anonymous participation:
 
 ## Deployment
 
-### Vercel (Recommended)
+### Quick Deploy to Vercel (Recommended)
+
+The platform can be deployed to Vercel **without a database** for demo purposes using external studies:
+
+1. **Connect your repository** to Vercel
+2. **Deploy** - No environment variables needed for demo mode!
+3. See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed instructions
+
+### Full Database Deployment
+
+When you're ready to host studies internally:
 
 1. **Connect your repository** to Vercel
 2. **Configure environment variables** in Vercel dashboard
-3. **Set up database** (Supabase, PlanetScale, or other PostgreSQL provider)
+3. **Set up database** (Vercel Postgres, Supabase, PlanetScale, or other PostgreSQL provider)
 4. **Deploy** - Vercel will automatically build and deploy
+
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for complete deployment guide.
 
 ### Docker
 
