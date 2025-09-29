@@ -1,35 +1,68 @@
 'use client'
 
-import { useState } from 'react'
-import { StudyQuestion, QuestionConfig } from '@/types'
+import { StudyQuestion } from '@/types'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Textarea } from '@/components/ui/textarea'
 import { Slider } from '@/components/ui/slider'
+import Image from 'next/image'
 
 interface QuestionRendererProps {
   question: StudyQuestion
-  value: any
-  onChange: (value: any) => void
+  value: unknown
+  onChange: (value: unknown) => void
   required?: boolean
 }
 
+interface BaseConfig {
+  type: string
+}
+
+interface TextConfig extends BaseConfig {
+  placeholder?: string
+  maxLength?: number
+}
+
+interface NumberConfig extends BaseConfig {
+  min?: number
+  max?: number
+}
+
+interface ChoiceOption {
+  id: string
+  label: string
+  value: string
+}
+
+interface ChoiceConfig extends BaseConfig {
+  options?: ChoiceOption[]
+  allowOther?: boolean
+  otherPlaceholder?: string
+}
+
+interface ScaleConfig extends BaseConfig {
+  min: number
+  max: number
+  minLabel?: string
+  maxLabel?: string
+  showNumbers?: boolean
+  step?: number
+}
+
 export function QuestionRenderer({ question, value, onChange, required = false }: QuestionRendererProps) {
-  const [errors, setErrors] = useState<string[]>([])
 
   const renderQuestionInput = () => {
     switch (question.type) {
       case 'text':
       case 'email':
-        const textConfig = question.config as any
+        const textConfig = question.config as TextConfig
         return (
           <Input
             type={question.type === 'email' ? 'email' : 'text'}
-            value={value || ''}
+            value={(value as string) || ''}
             onChange={(e) => onChange(e.target.value)}
             placeholder={textConfig.placeholder}
             maxLength={textConfig.maxLength}
@@ -39,10 +72,10 @@ export function QuestionRenderer({ question, value, onChange, required = false }
         )
 
       case 'textarea':
-        const textareaConfig = question.config as any
+        const textareaConfig = question.config as TextConfig
         return (
           <Textarea
-            value={value || ''}
+            value={(value as string) || ''}
             onChange={(e) => onChange(e.target.value)}
             placeholder={textareaConfig.placeholder}
             maxLength={textareaConfig.maxLength}
@@ -52,11 +85,11 @@ export function QuestionRenderer({ question, value, onChange, required = false }
         )
 
       case 'number':
-        const numberConfig = question.config as any
+        const numberConfig = question.config as NumberConfig
         return (
           <Input
             type="number"
-            value={value || ''}
+            value={(value as string) || ''}
             onChange={(e) => onChange(Number(e.target.value))}
             min={numberConfig.min}
             max={numberConfig.max}
@@ -66,14 +99,14 @@ export function QuestionRenderer({ question, value, onChange, required = false }
         )
 
       case 'single-choice':
-        const singleChoiceConfig = question.config as any
+        const singleChoiceConfig = question.config as ChoiceConfig
         return (
           <RadioGroup
-            value={value || ''}
+            value={(value as string) || ''}
             onValueChange={(val) => onChange(val)}
             className="space-y-3"
           >
-            {singleChoiceConfig.options?.map((option: any) => (
+            {singleChoiceConfig.options?.map((option: ChoiceOption) => (
               <div key={option.id} className="flex items-center space-x-2">
                 <RadioGroupItem value={option.value} id={option.id} />
                 <Label htmlFor={option.id} className="cursor-pointer">
@@ -96,8 +129,8 @@ export function QuestionRenderer({ question, value, onChange, required = false }
         )
 
       case 'multiple-choice':
-        const multipleChoiceConfig = question.config as any
-        const selectedValues = value || []
+        const multipleChoiceConfig = question.config as ChoiceConfig
+        const selectedValues = (value as string[]) || []
 
         const handleCheckboxChange = (optionValue: string, checked: boolean) => {
           let newValues = [...selectedValues]
@@ -113,7 +146,7 @@ export function QuestionRenderer({ question, value, onChange, required = false }
 
         return (
           <div className="space-y-3">
-            {multipleChoiceConfig.options?.map((option: any) => (
+            {multipleChoiceConfig.options?.map((option: ChoiceOption) => (
               <div key={option.id} className="flex items-center space-x-2">
                 <Checkbox
                   id={option.id}
@@ -130,7 +163,7 @@ export function QuestionRenderer({ question, value, onChange, required = false }
 
       case 'rating-scale':
       case 'likert':
-        const scaleConfig = question.config as any
+        const scaleConfig = question.config as ScaleConfig
         return (
           <div className="space-y-4">
             <div className="flex justify-between text-sm text-gray-600">
@@ -138,7 +171,7 @@ export function QuestionRenderer({ question, value, onChange, required = false }
               {scaleConfig.maxLabel && <span>{scaleConfig.maxLabel}</span>}
             </div>
             <RadioGroup
-              value={value?.toString() || ''}
+              value={(value as number)?.toString() || ''}
               onValueChange={(val) => onChange(Number(val))}
               className="flex space-x-4 justify-center"
             >
@@ -158,7 +191,7 @@ export function QuestionRenderer({ question, value, onChange, required = false }
         )
 
       case 'slider':
-        const sliderConfig = question.config as any
+        const sliderConfig = question.config as ScaleConfig
         return (
           <div className="space-y-4">
             <div className="flex justify-between text-sm text-gray-600">
@@ -166,7 +199,7 @@ export function QuestionRenderer({ question, value, onChange, required = false }
               {sliderConfig.maxLabel && <span>{sliderConfig.maxLabel}</span>}
             </div>
             <Slider
-              value={[value || sliderConfig.min]}
+              value={[(value as number) || sliderConfig.min]}
               onValueChange={(vals) => onChange(vals[0])}
               min={sliderConfig.min}
               max={sliderConfig.max}
@@ -174,7 +207,7 @@ export function QuestionRenderer({ question, value, onChange, required = false }
               className="w-full"
             />
             <div className="text-center text-sm text-gray-600">
-              Current value: {value || sliderConfig.min}
+              Current value: {(value as number) || sliderConfig.min}
             </div>
           </div>
         )
@@ -183,7 +216,7 @@ export function QuestionRenderer({ question, value, onChange, required = false }
         return (
           <Input
             type="date"
-            value={value || ''}
+            value={(value as string) || ''}
             onChange={(e) => onChange(e.target.value)}
             required={required}
             className="w-full"
@@ -195,7 +228,7 @@ export function QuestionRenderer({ question, value, onChange, required = false }
           <div className="flex items-center space-x-2">
             <Checkbox
               id={question.id}
-              checked={value || false}
+              checked={(value as boolean) || false}
               onCheckedChange={(checked) => onChange(checked)}
               required={required}
             />
@@ -208,7 +241,7 @@ export function QuestionRenderer({ question, value, onChange, required = false }
       default:
         return (
           <div className="text-gray-500 italic">
-            Question type "{question.type}" not yet implemented
+            Question type &quot;{question.type}&quot; not yet implemented
           </div>
         )
     }
@@ -234,13 +267,15 @@ export function QuestionRenderer({ question, value, onChange, required = false }
               <div key={index}>
                 {media.type === 'image' && (
                   <div className="space-y-1">
-                    <img
+                    <Image
                       src={media.url}
                       alt={media.alt || 'Study media'}
+                      width={media.width || 800}
+                      height={media.height || 600}
                       className="max-w-full h-auto rounded"
                       style={{
-                        width: media.width || 'auto',
-                        height: media.height || 'auto'
+                        width: media.width ? `${media.width}px` : 'auto',
+                        height: media.height ? `${media.height}px` : 'auto'
                       }}
                     />
                     {media.caption && (
@@ -254,16 +289,6 @@ export function QuestionRenderer({ question, value, onChange, required = false }
         )}
 
         {renderQuestionInput()}
-
-        {errors.length > 0 && (
-          <div className="space-y-1">
-            {errors.map((error, index) => (
-              <p key={index} className="text-sm text-red-600">
-                {error}
-              </p>
-            ))}
-          </div>
-        )}
       </CardContent>
     </Card>
   )

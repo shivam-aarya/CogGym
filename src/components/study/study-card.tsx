@@ -6,6 +6,18 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Clock, Users, Star, Zap, ExternalLink } from 'lucide-react'
 
+interface StudySettings {
+  timeLimit?: number
+  externalUrl?: string
+}
+
+interface StudyContent {
+  version: string
+  title: string
+  description?: string
+  sections: unknown[]
+}
+
 interface StudyCardProps {
   study: {
     id: string
@@ -13,8 +25,8 @@ interface StudyCardProps {
     description?: string
     status: string
     createdAt: Date
-    content: any
-    settings?: any
+    content: StudyContent
+    settings?: StudySettings
     _count?: {
       sessions: number
     }
@@ -22,8 +34,8 @@ interface StudyCardProps {
 }
 
 export function StudyCard({ study }: StudyCardProps) {
-  const content = study.content as any
-  const settings = study.settings as any
+  const content = study.content
+  const settings = study.settings
   const duration = settings?.timeLimit || 10
   const participantCount = study._count?.sessions || 0
   const isExternal = !!settings?.externalUrl

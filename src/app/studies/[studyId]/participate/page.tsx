@@ -5,12 +5,32 @@ import { useState, useEffect } from 'react'
 import { QuestionRenderer } from '@/components/study/question-renderer'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { ArrowLeft, ArrowRight, CheckCircle, Clock, Save } from 'lucide-react'
 import { getAnonymousId, saveSessionData, markStudyCompleted, clearSessionData } from '@/lib/anonymous-session'
+import type { StudyQuestion } from '@/types/study'
+
+interface StudyContentData {
+  version: string
+  title: string
+  description: string
+  instructions: string
+  sections: Array<{
+    id: string
+    title: string
+    instructions: string
+    questions: Array<StudyQuestion>
+  }>
+  settings: {
+    allowBack: boolean
+    showProgress: boolean
+    timeLimit: number
+    autoSave: boolean
+  }
+}
 
 // Mock study data with sample questions
-const mockStudyContent: any = {
+const mockStudyContent: StudyContentData = {
   version: '1.0',
   title: 'User Experience Design Survey',
   description: 'Help researchers understand how people interact with digital interfaces.',
@@ -142,7 +162,7 @@ export default function StudyParticipatePage() {
   const [studyContent] = useState(mockStudyContent)
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0)
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-  const [responses, setResponses] = useState<Record<string, any>>({})
+  const [responses, setResponses] = useState<Record<string, unknown>>({})
   const [startTime] = useState(Date.now())
   const [lastSaveTime, setLastSaveTime] = useState(Date.now())
   const [isCompleted, setIsCompleted] = useState(false)
@@ -151,7 +171,7 @@ export default function StudyParticipatePage() {
   const currentQuestion = currentSection?.questions[currentQuestionIndex]
 
   // Calculate progress
-  const totalQuestions = studyContent.sections.reduce((sum: number, section: any) => sum + section.questions.length, 0)
+  const totalQuestions = studyContent.sections.reduce((sum: number, section: StudyContentData['sections'][0]) => sum + section.questions.length, 0)
   const answeredQuestions = Object.keys(responses).length
   const progress = (answeredQuestions / totalQuestions) * 100
 
@@ -169,7 +189,7 @@ export default function StudyParticipatePage() {
     }
   }, [responses, lastSaveTime, studyContent.settings.autoSave, studyId, sessionId, currentSectionIndex, currentQuestionIndex, anonymousId])
 
-  const handleResponseChange = (questionId: string, value: any) => {
+  const handleResponseChange = (questionId: string, value: unknown) => {
     setResponses(prev => ({
       ...prev,
       [questionId]: value
@@ -248,7 +268,7 @@ export default function StudyParticipatePage() {
             <CheckCircle className="w-16 h-16 text-primary mx-auto mb-6" />
             <h1 className="text-3xl font-bold text-foreground mb-4">🎉 Thank You!</h1>
             <p className="text-lg text-muted-foreground mb-6">
-              You've successfully completed the study! Your responses have been securely saved.
+              You&apos;ve successfully completed the study! Your responses have been securely saved.
             </p>
             <div className="space-y-4">
               <Button onClick={handleComplete} size="lg">

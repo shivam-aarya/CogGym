@@ -6,13 +6,34 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
 import { ArrowLeft, Clock, Users, Calendar, Shield, CheckCircle, ExternalLink } from 'lucide-react'
 import { hasParticipated } from '@/lib/anonymous-session'
 
+interface MockStudy {
+  id: string
+  title: string
+  description: string
+  status: string
+  createdAt: Date
+  content: {
+    version: string
+    title: string
+    description: string
+    instructions: string
+    sections: unknown[]
+  }
+  settings: {
+    timeLimit: number
+    externalUrl?: string
+  }
+  _count: {
+    sessions: number
+  }
+}
+
 // Mock study data - will be replaced with API call
 // In production, this would fetch based on studyId
-const mockStudies: Record<string, any> = {
+const mockStudies: Record<string, MockStudy> = {
   '1': {
     id: '1',
     title: 'Phase Interface Study',

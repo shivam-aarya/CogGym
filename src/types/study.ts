@@ -47,6 +47,7 @@ export type QuestionType =
 
 export type QuestionConfig =
   | TextConfig
+  | NumberConfig
   | ChoiceConfig
   | ScaleConfig
   | RankingConfig
@@ -58,6 +59,14 @@ export interface TextConfig {
   placeholder?: string;
   maxLength?: number;
   minLength?: number;
+}
+
+export interface NumberConfig {
+  type: 'number';
+  min?: number;
+  max?: number;
+  step?: number;
+  placeholder?: string;
 }
 
 export interface ChoiceConfig {
@@ -139,16 +148,16 @@ export interface ConditionalLogic {
 
 export interface ValidationRule {
   type: 'required' | 'min' | 'max' | 'pattern' | 'custom';
-  value?: any;
+  value?: unknown;
   message: string;
 }
 
 export interface StudyResponse {
   questionId: string;
-  value: any;
+  value: unknown;
   timestamp: Date;
   duration?: number;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 // Helper function to check if a study is external

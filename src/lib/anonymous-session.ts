@@ -8,6 +8,13 @@
 const ANONYMOUS_ID_KEY = 'studyhub_anonymous_id'
 const SESSION_PREFIX = 'studyhub_session_'
 
+interface SessionData {
+  sessionId: string
+  studyId: string
+  data: unknown
+  lastUpdated: string
+}
+
 /**
  * Generate a simple browser fingerprint based on available information
  */
@@ -58,12 +65,12 @@ export function getAnonymousId(): string {
 /**
  * Store session data in localStorage
  */
-export function saveSessionData(studyId: string, sessionId: string, data: any): void {
+export function saveSessionData(studyId: string, sessionId: string, data: unknown): void {
   if (typeof window === 'undefined') return
 
   try {
     const key = `${SESSION_PREFIX}${studyId}`
-    const sessionData = {
+    const sessionData: SessionData = {
       sessionId,
       studyId,
       data,
@@ -78,7 +85,7 @@ export function saveSessionData(studyId: string, sessionId: string, data: any): 
 /**
  * Retrieve session data from localStorage
  */
-export function getSessionData(studyId: string): any {
+export function getSessionData(studyId: string): SessionData | null {
   if (typeof window === 'undefined') return null
 
   try {

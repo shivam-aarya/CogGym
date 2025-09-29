@@ -25,7 +25,7 @@ export interface UserPermissions {
 export interface GuestSession {
   id: string;
   studyId: string;
-  responses: any[];
+  responses: unknown[];
   startedAt: Date;
   expiresAt: Date;
 }

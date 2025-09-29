@@ -20,7 +20,7 @@ try {
       globalForPrisma.prisma = prismaClient
     }
   }
-} catch (error) {
+} catch {
   console.warn('Database connection not available. Running in demo mode with mock data.')
 }
 
