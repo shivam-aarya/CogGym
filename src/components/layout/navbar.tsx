@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { ThemeToggle } from './theme-toggle'
+import { Button } from '@/components/ui/button'
 
 export function Navbar() {
   return (
@@ -17,9 +18,22 @@ export function Navbar() {
           </div>
 
           {/* Navigation Links */}
-          <div className="flex items-center space-x-4">
-            {/* Theme Toggle */}
-            <ThemeToggle />
+          <div className="flex items-center space-x-2">
+            <Button variant="ghost" asChild className="text-sm font-medium">
+              <Link href="/about">About</Link>
+            </Button>
+            <Button variant="ghost" asChild className="text-sm font-medium">
+              <Link href="/experiments">Experiments</Link>
+            </Button>
+            <Button variant="ghost" asChild className="text-sm font-medium">
+              <Link href="/api-docs">API Documentation</Link>
+            </Button>
+            <Button variant="ghost" asChild className="text-sm font-medium">
+              <Link href="/contact">Contact Us</Link>
+            </Button>
+            <div className="ml-2 pl-2 border-l">
+              <ThemeToggle />
+            </div>
           </div>
         </div>
       </div>
