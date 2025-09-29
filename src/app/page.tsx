@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { StudyCard } from '@/components/study/study-card'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Users, Target, Shield, Zap, Filter } from 'lucide-react'
+import { Filter } from 'lucide-react'
 
 // Mock data - external studies for demo purposes
 // These can be replaced with database-fetched studies in the future
@@ -107,61 +107,6 @@ export default function Home() {
           the most robust and insightful experiments in the history of cognitive science. We partner with leading
           research labs to curate and standardize hundreds of their foundational studies into a living, interactive library.
         </p>
-      </div>
-
-      {/* Features Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-        <Card className="text-center">
-          <CardHeader>
-            <Target className="w-12 h-12 text-blue-600 mx-auto mb-4" />
-            <CardTitle>Contribute to Science</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <CardDescription>
-              Your participation directly contributes to research that advances
-              our understanding of human behavior and cognition.
-            </CardDescription>
-          </CardContent>
-        </Card>
-
-        <Card className="text-center">
-          <CardHeader>
-            <Zap className="w-12 h-12 text-green-600 mx-auto mb-4" />
-            <CardTitle>Quick & Easy</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <CardDescription>
-              Most studies take just 5-15 minutes. Participate from anywhere,
-              anytime, on any device.
-            </CardDescription>
-          </CardContent>
-        </Card>
-
-        <Card className="text-center">
-          <CardHeader>
-            <Shield className="w-12 h-12 text-purple-600 mx-auto mb-4" />
-            <CardTitle>Privacy Protected</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <CardDescription>
-              Your responses are completely anonymous and securely stored.
-              We follow strict privacy guidelines and ethical research standards.
-            </CardDescription>
-          </CardContent>
-        </Card>
-
-        <Card className="text-center">
-          <CardHeader>
-            <Users className="w-12 h-12 text-orange-600 mx-auto mb-4" />
-            <CardTitle>No Login Required</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <CardDescription>
-              Jump right in and participate in any study anonymously.
-              No account creation or personal information needed.
-            </CardDescription>
-          </CardContent>
-        </Card>
       </div>
 
       {/* Available Studies Section */}
