@@ -25,7 +25,7 @@ const mockStudies = [
       timeLimit: 15,
       externalUrl: 'https://phase-interface.web.app/'
     },
-    _count: { sessions: 234 }
+    _count: { sessions: 134 }
   },
   {
     id: '2',
@@ -79,7 +79,7 @@ const mockStudies = [
       timeLimit: 18,
       externalUrl: 'https://assisthri.web.app/'
     },
-    _count: { sessions: 312 }
+    _count: { sessions: 212 }
   }
 ]
 

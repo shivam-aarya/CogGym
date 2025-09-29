@@ -51,7 +51,7 @@ const mockStudies: Record<string, MockStudy> = {
       timeLimit: 15,
       externalUrl: 'https://phase-interface.web.app/'
     },
-    _count: { sessions: 234 }
+    _count: { sessions: 134 }
   },
   '2': {
     id: '2',
@@ -108,7 +108,7 @@ const mockStudies: Record<string, MockStudy> = {
       timeLimit: 18,
       externalUrl: 'https://assisthri.web.app/'
     },
-    _count: { sessions: 312 }
+    _count: { sessions: 212 }
   }
 }
 
@@ -183,7 +183,7 @@ export default function StudyDetailPage() {
               <Calendar className="w-5 h-5 text-muted-foreground" />
               <div>
                 <p className="font-medium">Available until</p>
-                <p className="text-sm text-muted-foreground">December 31, 2024</p>
+                <p className="text-sm text-muted-foreground">December 31, 2025</p>
               </div>
             </div>
 
