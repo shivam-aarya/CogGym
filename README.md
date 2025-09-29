@@ -1,6 +1,8 @@
-# CogGym - Research Study Platform
+# CogGym - AI Meets Cognitive Science
 
-A modern, anonymous research study platform for conducting user research. Built with Next.js, TypeScript, and PostgreSQL.
+A large-scale, collaborative platform where artificial intelligence meets cognitive science. Our mission is to provide a unified benchmark for comparing human and machine intelligence, built from the most robust and insightful experiments in the history of cognitive science. We partner with leading research labs to curate and standardize hundreds of their foundational studies into a living, interactive library.
+
+Built with Next.js, TypeScript, and PostgreSQL.
 
 ## Features
 

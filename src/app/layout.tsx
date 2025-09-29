@@ -9,10 +9,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "CogGym - Research Study Platform",
-  description: "Participate in research studies and contribute to scientific knowledge",
+  title: "CogGym - AI Meets Cognitive Science",
+  description: "A large-scale, collaborative platform where artificial intelligence meets cognitive science. Providing a unified benchmark for comparing human and machine intelligence through curated experiments from leading research labs.",
 };
-
 export default function RootLayout({
   children,
 }: Readonly<{

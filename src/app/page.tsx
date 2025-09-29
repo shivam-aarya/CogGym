@@ -101,9 +101,11 @@ export default function Home() {
         <h1 className="text-5xl font-bold text-foreground mb-6">
           Welcome to <span className="text-primary">CogGym</span>
         </h1>
-        <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-          Participate anonymously in research studies and contribute to scientific knowledge.
-          Help researchers understand human behavior, cognition, and user experience.
+        <p className="text-xl text-muted-foreground mb-8 max-w-4xl mx-auto leading-relaxed">
+          CogGym is a large-scale, collaborative platform where artificial intelligence meets cognitive science.
+          Our mission is to provide a unified benchmark for comparing human and machine intelligence, built from
+          the most robust and insightful experiments in the history of cognitive science. We partner with leading
+          research labs to curate and standardize hundreds of their foundational studies into a living, interactive library.
         </p>
       </div>
 
