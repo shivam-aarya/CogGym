@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { StudyCard } from '@/components/study/study-card'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Filter } from 'lucide-react'
+import { Filter, X, ChevronDown } from 'lucide-react'
 
 // Mock data - external studies for demo purposes
 // These can be replaced with database-fetched studies in the future
@@ -25,6 +25,11 @@ const mockStudies = [
       timeLimit: 15,
       externalUrl: 'https://phase-interface.web.app/'
     },
+    tags: {
+      cognitiveProcess: ['multimodal reasoning', 'decision making'],
+      modality: ['visual', 'interactive'],
+      studyLength: 'quick'
+    },
     _count: { sessions: 134 }
   },
   {
@@ -42,6 +47,11 @@ const mockStudies = [
     settings: {
       timeLimit: 20,
       externalUrl: 'https://multi-grid-game-9ytj.vercel.app/'
+    },
+    tags: {
+      cognitiveProcess: ['multimodal reasoning', 'decision making'],
+      modality: ['visual', 'interactive'],
+      studyLength: 'medium'
     },
     _count: { sessions: 156 }
   },
@@ -61,6 +71,11 @@ const mockStudies = [
       timeLimit: 25,
       externalUrl: 'https://player-app-fbf4c.web.app/'
     },
+    tags: {
+      cognitiveProcess: ['social reasoning', 'decision making', 'metacognition'],
+      modality: ['visual', 'interactive'],
+      studyLength: 'medium'
+    },
     _count: { sessions: 189 }
   },
   {
@@ -79,19 +94,67 @@ const mockStudies = [
       timeLimit: 18,
       externalUrl: 'https://assisthri.web.app/'
     },
+    tags: {
+      cognitiveProcess: ['social reasoning', 'physical reasoning', 'language'],
+      modality: ['visual', 'text', 'interactive'],
+      studyLength: 'medium'
+    },
     _count: { sessions: 212 }
   }
 ]
 
 export default function Home() {
   const [studies] = useState(mockStudies)
-  const [filter, setFilter] = useState('all')
+  const [filtersExpanded, setFiltersExpanded] = useState(false)
+  const [selectedFilters, setSelectedFilters] = useState<{
+    cognitiveProcess: string[]
+    modality: string[]
+    studyLength: string[]
+  }>({
+    cognitiveProcess: [],
+    modality: [],
+    studyLength: []
+  })
+
+  const toggleFilter = (category: 'cognitiveProcess' | 'modality' | 'studyLength', value: string) => {
+    setSelectedFilters(prev => ({
+      ...prev,
+      [category]: prev[category].includes(value)
+        ? prev[category].filter(v => v !== value)
+        : [...prev[category], value]
+    }))
+  }
+
+  const clearFilters = () => {
+    setSelectedFilters({
+      cognitiveProcess: [],
+      modality: [],
+      studyLength: []
+    })
+  }
 
   const filteredStudies = studies.filter(study => {
-    if (filter === 'new') return Date.now() - study.createdAt.getTime() < 7 * 24 * 60 * 60 * 1000
-    if (filter === 'quick') return (study.settings?.timeLimit || 0) <= 10
-    if (filter === 'long') return (study.settings?.timeLimit || 0) > 15
-    return true
+    const hasActiveFilters =
+      selectedFilters.cognitiveProcess.length > 0 ||
+      selectedFilters.modality.length > 0 ||
+      selectedFilters.studyLength.length > 0
+
+    if (!hasActiveFilters) return true
+
+    const matchesCognitive = selectedFilters.cognitiveProcess.length === 0 ||
+      selectedFilters.cognitiveProcess.some(filter =>
+        study.tags?.cognitiveProcess?.includes(filter)
+      )
+
+    const matchesModality = selectedFilters.modality.length === 0 ||
+      selectedFilters.modality.some(filter =>
+        study.tags?.modality?.includes(filter)
+      )
+
+    const matchesLength = selectedFilters.studyLength.length === 0 ||
+      selectedFilters.studyLength.includes(study.tags?.studyLength || '')
+
+    return matchesCognitive && matchesModality && matchesLength
   })
 
   return (
@@ -111,33 +174,107 @@ export default function Home() {
 
       {/* Available Studies Section */}
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-4">
           <div>
             <h2 className="text-3xl font-bold text-foreground">Available Studies</h2>
             <p className="text-muted-foreground mt-2">Choose a study to get started</p>
           </div>
-          <div className="flex items-center space-x-2">
-            <Filter className="w-4 h-4 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">Filter:</span>
-            <div className="flex space-x-2">
-              {[
-                { key: 'all', label: 'All' },
-                { key: 'new', label: 'New' },
-                { key: 'quick', label: 'Quick' },
-                { key: 'long', label: 'In-depth' }
-              ].map(({ key, label }) => (
-                <Button
-                  key={key}
-                  variant={filter === key ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setFilter(key)}
-                >
-                  {label}
-                </Button>
-              ))}
-            </div>
+          <div className="flex items-center gap-2">
+            {(selectedFilters.cognitiveProcess.length > 0 ||
+              selectedFilters.modality.length > 0 ||
+              selectedFilters.studyLength.length > 0) && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={clearFilters}
+                className="text-muted-foreground hover:text-foreground"
+              >
+                <X className="w-4 h-4 mr-1" />
+                Clear All
+              </Button>
+            )}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setFiltersExpanded(!filtersExpanded)}
+              className="flex items-center gap-2"
+            >
+              <Filter className="w-4 h-4" />
+              Filters
+              {(selectedFilters.cognitiveProcess.length > 0 ||
+                selectedFilters.modality.length > 0 ||
+                selectedFilters.studyLength.length > 0) && (
+                <span className="ml-1 px-1.5 py-0.5 text-xs rounded-full bg-primary text-primary-foreground">
+                  {selectedFilters.cognitiveProcess.length + selectedFilters.modality.length + selectedFilters.studyLength.length}
+                </span>
+              )}
+              <ChevronDown className={`w-4 h-4 transition-transform ${filtersExpanded ? 'rotate-180' : ''}`} />
+            </Button>
           </div>
         </div>
+
+        {/* Collapsible Filter Section */}
+        {filtersExpanded && (
+          <Card className="mb-6">
+            <CardContent className="pt-6">
+              <div className="space-y-4">
+                {/* Cognitive Process Filters */}
+                <div>
+                  <h3 className="text-sm font-semibold text-foreground mb-3">Cognitive Process</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {['multimodal reasoning', 'social reasoning', 'physical reasoning', 'language', 'decision making', 'metacognition'].map((process) => (
+                      <Button
+                        key={process}
+                        variant={selectedFilters.cognitiveProcess.includes(process) ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => toggleFilter('cognitiveProcess', process)}
+                        className="capitalize"
+                      >
+                        {process}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Modality Filters */}
+                <div>
+                  <h3 className="text-sm font-semibold text-foreground mb-3">Modality</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {['visual', 'text', 'audio', 'interactive'].map((modality) => (
+                      <Button
+                        key={modality}
+                        variant={selectedFilters.modality.includes(modality) ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => toggleFilter('modality', modality)}
+                        className="capitalize"
+                      >
+                        {modality}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Study Length Filters */}
+                <div>
+                  <h3 className="text-sm font-semibold text-foreground mb-3">Study Length</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {['quick', 'medium', 'long'].map((length) => (
+                      <Button
+                        key={length}
+                        variant={selectedFilters.studyLength.includes(length) ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => toggleFilter('studyLength', length)}
+                        className="capitalize"
+                      >
+                        {length === 'quick' ? '< 15 min' : length === 'medium' ? '15-30 min' : '> 30 min'}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredStudies.map((study) => (

@@ -30,6 +30,7 @@ model Study {
 
   content     Json
   settings    Json?
+  tags        Json?       // Stores tags for filtering (cognitiveProcess, modality, studyLength)
 
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
